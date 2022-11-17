@@ -22,6 +22,13 @@ public class HomeController {
     public HomeController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
+
+    @GetMapping("/")
+    public String home(){
+        return "redirect:/index";
+    }
+
+
     @GetMapping("index")
     public String index(){
         return "index";
