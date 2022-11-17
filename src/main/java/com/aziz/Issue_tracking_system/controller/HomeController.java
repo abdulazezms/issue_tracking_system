@@ -41,6 +41,7 @@ public class HomeController {
     public String processSignup(@ModelAttribute("user") User user){
         User cur = userRepository.findByUsername(user.getUsername());
         if(cur != null){
+            //in case the username is already taken
             return "redirect:signup?error=true";
         }
 
