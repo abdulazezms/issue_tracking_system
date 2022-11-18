@@ -6,7 +6,7 @@ The issue tracker system addresses the management of tracking bugs and feature r
 
 
 * Issues specific to individual projects
-* Grante privileges for admins such as creating and deleting projects
+* Grante privileges to admins such as creating and deleting projects
 * Identify the severity of an issue
 
 
