@@ -30,6 +30,7 @@ public class IssueTrackingSystemApplication {
 				collection.addPattern("/*");
 				securityConstraint.addCollection(collection);
 				context.addConstraint(securityConstraint);
+
 			}
 		};
 
