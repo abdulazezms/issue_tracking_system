@@ -23,7 +23,7 @@ public class Issue {
 
 
     @ManyToOne
-    private User user;//created by this suer;
+    private User user;//created by this user;
 
     @ManyToOne
     private Project project;

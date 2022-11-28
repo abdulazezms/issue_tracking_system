@@ -39,6 +39,10 @@
                onclick="if (!(confirm('Are you sure you want to delete this project?'))) return false">
               Delete
             </a>
+            <a th:href="@{/projects/update(id=${tempProject.id})}"
+               class="btn btn-info btn-sm">
+              Update
+            </a>
 
           </div>
 
