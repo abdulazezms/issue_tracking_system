@@ -25,7 +25,17 @@
     <tbody>
     <tr th:each="tempProject : ${projects}">
 
-      <td th:text="${tempProject.name}" />
+
+      <td>
+        <a th:href="@{/issues(id=${tempProject.id})}">
+          <p th:text="${tempProject.name}"/> </p>
+        </a>
+      </td>
+
+
+
+
+
       <td th:text="${tempProject.description}" />
 
 
