@@ -61,5 +61,12 @@ public class ProjectController {
         return "redirect:/projects/index";
     }
 
+    @GetMapping("/delete")
+    public String deleteProject(@RequestParam("id") Optional<Integer> id){
+        if(id.isEmpty()) return "projects/index";
+        //TODO: Delete the project along with the issues related to it.
+        return "redirect:/projects/index";
+    }
+
 
 }

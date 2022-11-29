@@ -11,7 +11,7 @@
 
 
 
-        <a th:href="@{~/issues/showFormAdd}" sec:authorize="isAuthenticated()"  class="btn btn-primary">Add Issue</a>
+        <a th:href="@{~/issues/showFormAdd(id=${project.id})}" sec:authorize="isAuthenticated()"  class="btn btn-primary">Add Issue</a>
 
         <br><br>
         <table class="table table-striped">
@@ -26,16 +26,11 @@
             </thead>
 
             <tbody>
-<!--            <tr th:each="tempProject : ${projects}">-->
+            <tr th:each="tempIssue : ${issues}">
 
 
-<!--                <td>-->
-<!--                    <a th:href="@{/issues(id=${tempProject.id})}">-->
-<!--                        <p th:text="${tempProject.name}"/> </p>-->
-<!--                    </a>-->
-<!--                </td>-->
-
-
+                <td th:text="${tempIssue.user.username}"/>
+                <td th:text="${tempIssue.description}"/>
 
 
 
@@ -63,7 +58,7 @@
 
 <!--                </div>-->
 
-<!--            </tr>-->
+            </tr>
             </tbody>
 
         </table>

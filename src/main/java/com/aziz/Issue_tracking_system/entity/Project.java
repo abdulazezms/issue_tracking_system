@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,9 +33,12 @@ public class Project {
         this.name = name;
         this.issues = issues;
         this.description = description;
+        this.issues = new ArrayList<>();
     }
 
     public Project(){}
+
+
 
 
 

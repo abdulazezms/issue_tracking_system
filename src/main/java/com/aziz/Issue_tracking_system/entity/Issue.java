@@ -28,7 +28,13 @@ public class Issue {
     @ManyToOne
     private Project project;
 
-
-
-
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }
