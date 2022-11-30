@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -39,7 +40,7 @@ public class IssueController {
         if(project == null) return redirectionPath;
         model.addAttribute("project", project);
         model.addAttribute("issues", project.getIssues());
-        model.addAttribute("projectName", " ".concat(project.getName()));
+        model.addAttribute("projectName", " - ".concat(project.getName()));
         return "issues/index";
     }
 
@@ -76,7 +77,8 @@ public class IssueController {
     public String saveIssue(@ModelAttribute("issue") Issue issue){
 
         int id = issue.getProject().getId();
-
+        issue.setPriorityText(Map.of(1, "High", 2, "Medium", 3, "Low").get(issue.getPriority()));
+        issue.setStatus("Created");
         issueRepository.save(issue);
         return "redirect:/issues?id="+id;
     }

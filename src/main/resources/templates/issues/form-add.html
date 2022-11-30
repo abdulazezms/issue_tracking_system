@@ -20,6 +20,14 @@
           <label for="exampleFormControlTextarea1" class="form-label">Issue's Short Description</label>
           <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Description must not be empty" rows="3" th:field="*{description}"></textarea>
         </div>
+
+        <p>Select Priority</p>
+        <select class="form-select" aria-label="Default select example" th:field="*{priority}">
+<!--            <option selected>Select Priority</option>-->
+            <option th:value="1"> High</option>
+            <option th:value="2"> Medium</option>
+            <option th:value="3"> Low</option>
+        </select>
       <button class="btn btn-success" type="submit">Save</button>
         <div th:if="${#ctx.containsVariable('error_message')}" th:text="${error_message}" style="color:red"></div>
     </form>

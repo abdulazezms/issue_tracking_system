@@ -28,6 +28,12 @@ public class Issue {
     @ManyToOne
     private Project project;
 
+    private int priority;
+
+    private String priorityText;
+
+    private String status;
+
     @Override
     public String toString() {
         return "Issue{" +
@@ -35,6 +41,10 @@ public class Issue {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", user=" + user +
+                ", priority='" + priority + '\'' +
+                ", priorityText='" + priorityText + '\'' +
+                ", priorityText='" + status + '\'' +
+
                 '}';
     }
 }
