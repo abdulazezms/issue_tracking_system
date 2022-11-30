@@ -1,5 +1,6 @@
 package com.aziz.Issue_tracking_system.controller;
 
+import com.aziz.Issue_tracking_system.dao.IssueRepository;
 import com.aziz.Issue_tracking_system.dao.ProjectRepository;
 import com.aziz.Issue_tracking_system.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import java.util.Optional;
 @RequestMapping("/projects")
 public class ProjectController {
     ProjectRepository projectRepository;
+    IssueRepository issueRepository;
 
     @Autowired
-    public ProjectController(ProjectRepository projectRepository){
+    public ProjectController(ProjectRepository projectRepository, IssueRepository issueRepository){
         this.projectRepository = projectRepository;
+        this.issueRepository = issueRepository;
     }
 
 
@@ -63,8 +66,13 @@ public class ProjectController {
 
     @GetMapping("/delete")
     public String deleteProject(@RequestParam("id") Optional<Integer> id){
+        System.out.println("receiving delete request with id = !" + id);
         if(id.isEmpty()) return "projects/index";
-        //TODO: Delete the project along with the issues related to it.
+        //delete the issues first related to the project, then delete the project.
+        Project project = projectRepository.getReferenceById(id.get());
+        issueRepository.deleteAll(project.getIssues());
+        projectRepository.deleteById(id.get());
+
         return "redirect:/projects/index";
     }
 

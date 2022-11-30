@@ -36,7 +36,9 @@ public class Project {
         this.issues = new ArrayList<>();
     }
 
-    public Project(){}
+    public Project(){
+        this.issues = new ArrayList<>();
+    }
 
 
 
