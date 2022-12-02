@@ -78,9 +78,18 @@ public class IssueController {
 
         int id = issue.getProject().getId();
         issue.setPriorityText(Map.of(1, "High", 2, "Medium", 3, "Low").get(issue.getPriority()));
-        issue.setStatus("Created");
+        issue.setStatus("New");
         issueRepository.save(issue);
         return "redirect:/issues?id="+id;
+    }
+
+
+    @GetMapping("/delete")
+    public String deleteIssue(@RequestParam("issueId") Optional<Integer> issueId, @RequestParam("projectId") Optional<Integer> projectId){
+        System.out.println("the issue id = " + issueId+" and the project id = " + projectId);
+        if(issueId.isEmpty() || projectId.isEmpty()) return redirectionPath;
+        issueRepository.deleteById(issueId.get());
+        return "redirect:/issues?id="+projectId.get();
     }
 
 

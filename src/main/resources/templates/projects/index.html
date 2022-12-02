@@ -45,13 +45,13 @@
           <div sec:authorize="hasRole('ROLE_ADMIN')">
             <!-- Add "delete" button/link -->
             <a th:href="@{/projects/delete(id=${tempProject.id})}"
-               class="btn btn-danger btn-sm"
                onclick="if (!(confirm('Are you sure you want to delete this project?'))) return false">
-              Delete
+              <i class="fas fa-trash-alt" style="color:red;"></i>
             </a>
-            <a th:href="@{/projects/update(id=${tempProject.id})}"
-               class="btn btn-info btn-sm">
-              Update
+
+
+            <a th:href="@{/projects/update(id=${tempProject.id})}">
+              <i class="fas fa-edit"></i>
             </a>
 
           </div>
