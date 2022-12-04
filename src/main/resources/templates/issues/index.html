@@ -21,7 +21,7 @@
                 <td>Issue Description</td>
                 <td>Status</td>
                 <td>Priority</td>
-                <td sec:authorize="hasRole('ROLE_ADMIN')">Action</td>
+                <td sec:authorize="isAuthenticated()">Action</td>
             </tr>
             </thead>
 
@@ -34,10 +34,10 @@
                 <td th:text="${tempIssue.status}"/>
                 <td th:text="${tempIssue.priorityText}"/>
 
-                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <div sec:authorize="isAuthenticated()">
 
                     <td>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <span sec:authorize="hasRole('ROLE_ADMIN')">
 <!--                            <button type="button" class="btn btn-light"><span class="bi bi-trash"></span></button>-->
 
                             <a th:href="@{/issues/delete(issueId=${tempIssue.id}, projectId=${project.id})}"
@@ -47,8 +47,14 @@
                             <a th:href="@{/issues/update(issueId=${tempIssue.id})}">
                                 <i class="fas fa-edit"></i>
                             </a>
+                        </span>
 
-                        </div>
+                        <span th:if="${tempIssue.status == 'New'}">
+                            <a th:href="@{/issues/showFormResolve(issueId=${tempIssue.id})}"
+                               onclick="if (!(confirm('Are you sure that you resolved this issue?'))) return false">
+                                <i class="fa fa-check" style="color:green;" aria-hidden="true"></i>
+                            </a>
+                        </span>
 
                     </td>
 

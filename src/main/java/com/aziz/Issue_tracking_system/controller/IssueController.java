@@ -93,4 +93,11 @@ public class IssueController {
     }
 
 
+    @GetMapping("/showFormResolve")
+    public String showResolveForm(@RequestParam("issueId") Optional<Integer> issueId){
+        System.out.println("issue with id = " + issueId.get()+" is resolved and the currently logged in user is " + SecurityContextHolder.getContext().getAuthentication().getName());
+        return "redirect:/issues?id="+issueRepository.getReferenceById(issueId.get()).getProject().getId();
+    }
+
+
 }
