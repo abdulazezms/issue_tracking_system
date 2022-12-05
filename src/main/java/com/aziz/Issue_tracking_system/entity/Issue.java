@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,11 +30,18 @@ public class Issue {
     @ManyToOne
     private Project project;
 
+    @OneToMany(mappedBy = "issue")
+    private List<ResolvedIssue> resolvedIssues;
+
     private int priority;
 
     private String priorityText;
 
     private String status;
+
+    public Issue(){
+        this.resolvedIssues = new ArrayList<>();
+    }
 
     @Override
     public String toString() {
@@ -43,7 +52,9 @@ public class Issue {
                 ", user=" + user +
                 ", priority='" + priority + '\'' +
                 ", priorityText='" + priorityText + '\'' +
-                ", priorityText='" + status + '\'' +
+                ", status='" + status + '\'' +
+                ", resolvedIssues='" + resolvedIssues + '\'' +
+
 
                 '}';
     }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: headerfiles"></head>
+<body>
+<header th:insert="fragments.html :: nav"></header>
+<div class="container">
+
+  <form th:action="@{/issues/resolve}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:value="${issueId}" name="issueId">
+    <div class="mb-3">
+      <label for="file" class="form-label">Upload your file here</label>
+      <input class="form-control" name="file" type="file" id="file">
+
+    </div>
+    <button class="btn btn-success" type="submit">Save</button>
+  </form>
+</div>
+
+
+</body>
+</html>

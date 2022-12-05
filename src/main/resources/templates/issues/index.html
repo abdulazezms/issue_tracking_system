@@ -22,45 +22,58 @@
                 <td>Status</td>
                 <td>Priority</td>
                 <td sec:authorize="isAuthenticated()">Action</td>
+                <td>Feedback</td>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="tempIssue : ${issues}">
+                <tr th:each="tempIssue : ${issues}">
 
 
-                <td th:text="${tempIssue.user.username}"/>
-                <td th:text="${tempIssue.description}"/>
-                <td th:text="${tempIssue.status}"/>
-                <td th:text="${tempIssue.priorityText}"/>
+                    <td th:text="${tempIssue.user.username}"/>
+                    <td th:text="${tempIssue.description}"/>
 
-                <div sec:authorize="isAuthenticated()">
+                    <span th:if="${tempIssue.status == 'New'}"><td style="color:green;"><b>New</b></td></span>
+                    <span th:if="${tempIssue.status == 'Resolved'}"><td style="color:black;"><b>Resolved</b></td></span>
+                    <span th:if="${tempIssue.priorityText == 'High'}" ><td style="color:red;"><b>High</b></td></span>
+                    <span th:if="${tempIssue.priorityText == 'Medium'}" ><td style="color:brown;"><b>Medium</b></td></span>
+                    <span th:if="${tempIssue.priorityText == 'Low'}"><td style="color:blue;"><b>Low</b></td></span>
 
+
+<!--                    <td th:text="${tempIssue.priorityText}"/>-->
+
+                    <div sec:authorize="isAuthenticated()">
+
+                        <td>
+                            <span sec:authorize="hasRole('ROLE_ADMIN')">
+    <!--                            <button type="button" class="btn btn-light"><span class="bi bi-trash"></span></button>-->
+
+                                <a th:href="@{/issues/delete(issueId=${tempIssue.id}, projectId=${project.id})}"
+                                   onclick="if (!(confirm('Are you sure you want to delete this issue?'))) return false">
+                                    <i class="fas fa-trash-alt" style="color:red;"></i>
+                                </a>
+                                <a th:href="@{/issues/update(issueId=${tempIssue.id})}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </span>
+
+                            <span th:if="${tempIssue.status == 'New'}">
+                                <a th:href="@{/issues/showFormResolve(issueId=${tempIssue.id})}"
+                                   onclick="if (!(confirm('Are you sure that you resolved this issue?'))) return false">
+                                    <i class="fa fa-check" style="color:green;" aria-hidden="true"></i>
+                                </a>
+                            </span>
+
+                        </td>
+
+                    </div>
                     <td>
-                        <span sec:authorize="hasRole('ROLE_ADMIN')">
-<!--                            <button type="button" class="btn btn-light"><span class="bi bi-trash"></span></button>-->
-
-                            <a th:href="@{/issues/delete(issueId=${tempIssue.id}, projectId=${project.id})}"
-                               onclick="if (!(confirm('Are you sure you want to delete this issue?'))) return false">
-                                <i class="fas fa-trash-alt" style="color:red;"></i>
-                            </a>
-                            <a th:href="@{/issues/update(issueId=${tempIssue.id})}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </span>
-
-                        <span th:if="${tempIssue.status == 'New'}">
-                            <a th:href="@{/issues/showFormResolve(issueId=${tempIssue.id})}"
-                               onclick="if (!(confirm('Are you sure that you resolved this issue?'))) return false">
-                                <i class="fa fa-check" style="color:green;" aria-hidden="true"></i>
-                            </a>
-                        </span>
-
+                        <th:block th:each="tempFile : ${tempIssue?.resolvedIssues}">
+                            <a  th:text="${tempFile.name}" th:href="@{/issues/download(fileId=${tempFile.id})}"/>
+                        </th:block>
                     </td>
 
-                </div>
-
-            </tr>
+                </tr>
             </tbody>
 
         </table>
