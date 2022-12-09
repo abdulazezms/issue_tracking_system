@@ -7,28 +7,30 @@
 <header th:insert="fragments.html :: nav"></header>
 <div class="container">
 
+<!--    ${tempProject.name}-->
+    <form class="mx-1 mx-md-4" th:action="@{/issues/save}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:value="${project.id}" name="projectId">
+        <input type="hidden" th:value="${user.id}" name="userId">
 
-    <form th:object="${issue}" class="mx-1 mx-md-4" th:action="@{/issues/save}" method="post">
-        <input type="hidden" th:field="*{id}" id="id">
-        <input type="hidden" th:field="*{project}" id="project">
-        <input type="hidden" th:field="*{user}" id="user">
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Issue's Title</label>
-          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" th:field="*{title}">
-        </div>
-        <div class="mb-3">
-          <label for="exampleFormControlTextarea1" class="form-label">Issue's Short Description</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Description must not be empty" rows="3" th:field="*{description}"></textarea>
+        <div class="">
+          <label for="exampleFormControlTextarea1" class="form-label"><b>Issue's Short Description</b></label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Description must not be empty" rows="3" name="description"></textarea>
         </div>
 
-        <p>Select Priority</p>
-        <select class="form-select" aria-label="Default select example" th:field="*{priority}">
-<!--            <option selected>Select Priority</option>-->
+        <p class="mt-3" > <b>Select Priority</b></p>
+        <select class="form-select"  aria-label="Default select example" name="priority">
             <option th:value="1"> High</option>
             <option th:value="2"> Medium</option>
             <option th:value="3"> Low</option>
         </select>
-      <button class="btn btn-success" type="submit">Save</button>
+
+        <div class="mb-3 mt-4">
+            <label for="file" class="form-label"><b>Upload your file here</b></label>
+            <input class="form-control" name="file" type="file" id="file">
+        </div>
+
+
+      <button class="btn btn-success mt-3" type="submit">Save</button>
         <div th:if="${#ctx.containsVariable('error_message')}" th:text="${error_message}" style="color:red"></div>
     </form>
 </div>

@@ -16,13 +16,7 @@ public class Issue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Title must not be left empty")
-    private String title;
-
-
-    @NotBlank(message = "Description must not be left empty")
     private String description;
-
 
     @ManyToOne
     private User user;//created by this user;
@@ -34,6 +28,11 @@ public class Issue {
     private List<ResolvedIssue> resolvedIssues;
 
     private int priority;
+
+    @Lob
+    private byte [] file;
+
+    private String fileName;
 
     private String priorityText;
 
@@ -47,13 +46,13 @@ public class Issue {
     public String toString() {
         return "Issue{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", user=" + user +
                 ", priority='" + priority + '\'' +
                 ", priorityText='" + priorityText + '\'' +
                 ", status='" + status + '\'' +
                 ", resolvedIssues='" + resolvedIssues + '\'' +
+                ", fileName='" + fileName + '\'' +
 
 
                 '}';

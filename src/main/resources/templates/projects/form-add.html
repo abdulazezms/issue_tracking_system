@@ -11,12 +11,12 @@
     <form th:object="${project}" class="mx-1 mx-md-4" th:action="@{/projects/save}" method="post">
         <input type="hidden" th:field="*{id}" id="id">
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Project's Name</label>
-          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" th:field="*{name}">
+          <label for="exampleFormControlInput1" class="form-label"><b>Project's Name</b></label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Project's name must not be empty" th:field="*{name}">
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlTextarea1" class="form-label">Project's Short Description</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Description must be less than 100 characters" rows="3" th:field="*{description}"></textarea>
+          <label for="exampleFormControlTextarea1" class="form-label"><b>Project's Short Description</b></label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Project's description must be less than 100 characters" rows="3" th:field="*{description}"></textarea>
         </div>
       <button class="btn btn-success" type="submit">Save</button>
         <div th:if="${#ctx.containsVariable('error_message')}" th:text="${error_message}" style="color:red"></div>
