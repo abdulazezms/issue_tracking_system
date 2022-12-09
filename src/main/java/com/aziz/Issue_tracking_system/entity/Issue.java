@@ -24,8 +24,8 @@ public class Issue {
     @ManyToOne
     private Project project;
 
-    @OneToMany(mappedBy = "issue")
-    private List<ResolvedIssue> resolvedIssues;
+    @OneToOne(mappedBy = "issue", cascade = CascadeType.ALL)
+    private ResolvedIssue resolvedIssue;
 
     private int priority;
 
@@ -38,9 +38,6 @@ public class Issue {
 
     private String status;
 
-    public Issue(){
-        this.resolvedIssues = new ArrayList<>();
-    }
 
     @Override
     public String toString() {
@@ -51,7 +48,7 @@ public class Issue {
                 ", priority='" + priority + '\'' +
                 ", priorityText='" + priorityText + '\'' +
                 ", status='" + status + '\'' +
-                ", resolvedIssues='" + resolvedIssues + '\'' +
+                ", resolvedIssues='" + resolvedIssue + '\'' +
                 ", fileName='" + fileName + '\'' +
 
 

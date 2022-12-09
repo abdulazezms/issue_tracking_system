@@ -22,7 +22,7 @@ public class Project {
     @NotBlank(message = "Project's name must not be empty")
     @Size(max = 50, message = "Project's name must not exceed 50 characters")
     private String name;
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
     private List<Issue> issues;
 
     @NotBlank(message = "Project's description must not be empty")

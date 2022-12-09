@@ -9,8 +9,8 @@
 
   <form th:action="@{/issues/resolve}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:value="${issueId}" name="issueId">
-    <div class="mb-3">
-      <label for="file" class="form-label">Upload your feedback here</label>
+    <div class="mb-3 mt-5">
+      <label for="file" class="form-label"><b>Upload your feedback here</b></label>
       <input class="form-control" name="file" type="file" id="file">
 
     </div>

@@ -65,6 +65,7 @@ public class ProjectController {
     public String deleteProject(@RequestParam("id") Optional<Integer> id){
         if(id.isEmpty()) return "projects/index";
         Project project = projectRepository.getReferenceById(id.get());
+
         issueRepository.deleteAll(project.getIssues());
         projectRepository.deleteById(id.get());
         return "redirect:/projects/index";

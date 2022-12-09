@@ -21,7 +21,7 @@ public class ResolvedIssue {
 
     private String type;
 
-    @ManyToOne
+    @OneToOne
     private Issue issue;
 
     @Lob

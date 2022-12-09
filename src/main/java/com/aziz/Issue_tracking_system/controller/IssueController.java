@@ -114,7 +114,7 @@ public class IssueController {
         resolvedIssue.setFile(file.get().getBytes());
         resolvedIssue.setName(file.get().getOriginalFilename());
         resolvedIssue.setType(file.get().getContentType());
-        issue.getResolvedIssues().add(resolvedIssue);
+        issue.setResolvedIssue(resolvedIssue);
         issue.setStatus("Resolved");
         resolvedIssueRepository.save(resolvedIssue);
         return "redirect:/issues?id="+project.getId();
@@ -126,12 +126,6 @@ public class IssueController {
         if(issueId.isEmpty() || projectId.isEmpty()) return redirectionPath;
         Issue issue = issueRepository.getReferenceById(issueId.get());
         if(issue == null) return redirectionPath;
-        List<Integer> ids = new ArrayList<>();
-        if(issue.getResolvedIssues() != null){
-            for(ResolvedIssue r : issue.getResolvedIssues())
-                ids.add(r.getId());
-        }
-        resolvedIssueRepository.deleteAllByIdInBatch(ids);//Delete all ids by only hitting the db once to avoid accessing disk n times.
         issueRepository.deleteById(issueId.get());
         return "redirect:/issues?id="+projectId.get();
     }
