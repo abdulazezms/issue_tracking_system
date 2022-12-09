@@ -43,6 +43,7 @@
                     </div>
 
                     <span th:if="${param.error != null}" style="color:red;">Username already exists!<br></span>
+                    <span th:if="${param.success != null}" style="color:green;">You have been successfully registered!<br></span>
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button type="submit" class="btn btn-primary btn-lg">Register</button>
                     </div>

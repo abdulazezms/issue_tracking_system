@@ -56,7 +56,7 @@ public class HomeController {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setRoles("USER");
         userRepository.save(user);
-        return "redirect:index";
+        return "redirect:signup?success=true";
     }
 
 }
