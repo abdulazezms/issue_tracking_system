@@ -5,6 +5,8 @@ import com.aziz.Issue_tracking_system.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService{
     UserRepository userRepository;
@@ -23,6 +25,12 @@ public class UserServiceImpl implements UserService{
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 
     @Override
     public void saveUser(User user) {

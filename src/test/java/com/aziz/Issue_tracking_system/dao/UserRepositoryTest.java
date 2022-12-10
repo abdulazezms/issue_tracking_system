@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -14,9 +17,9 @@ import static org.assertj.core.api.Assertions.*;
 class UserRepositoryTest {
 
     @Autowired
-    UserRepository userRepositoryUnderTest;
-    String email = "219110520@psu.edu.sa";
-    User userUnderTest = new User(
+    private UserRepository userRepositoryUnderTest;
+    private String email = "219110520@psu.edu.sa";
+    private User userUnderTest = new User(
             "Abdulaziz Al-Alshaikh",
             email,
             "simple_password",
@@ -24,15 +27,15 @@ class UserRepositoryTest {
             ""
     );
 
-    @AfterEach
-    void tearDown() {
-        //After each test, delete all tuples from the db, to start in a clean state in the next test.
+    @BeforeEach
+    void setup() {
+        //Before each test, delete all tuples from the db, to start in a clean state in the next test.
         userRepositoryUnderTest.deleteAll();
     }
 
     @Order(1)
     @Test
-    void findUserByUsernameWhenExists() {
+    void testFindUserByUsernameWhenExists() {
         userRepositoryUnderTest.save(userUnderTest);
         User result = userRepositoryUnderTest.findByUsername(email);
         assertThat(result.getUsername()).isEqualTo(userUnderTest.getUsername());
@@ -40,7 +43,7 @@ class UserRepositoryTest {
 
     @Order(2)
     @Test
-    void findUserByUsernameWhenDoesNotExist() {
+    void testFindUserByUsernameWhenDoesNotExist() {
         String nonExistingEmail = "xxx@psu.edu.sa";
         User result = userRepositoryUnderTest.findByUsername(nonExistingEmail);
         assertThat(result).isNull();
@@ -136,6 +139,26 @@ class UserRepositoryTest {
         //check if the old role was admin and the new updated role is user
         assertThat(oldRole).isEqualTo("ADMIN");
         assertThat(userRepositoryUnderTest.findByUsername(userUnderTest.getUsername()).getRoles()).isEqualTo("USER");
+    }
+
+    @Order(9)
+    @Test
+    void testFindAllUsers(){
+        User a = new User("a", "a@gmail.com", "password", "USER", ""),
+                b = new User("b", "b@gmail.com", "password", "USER", "");
+        userRepositoryUnderTest.saveAll(Arrays.asList(a, b));
+
+        List<User> users = userRepositoryUnderTest.findAll();
+        assertThat(users.size()).isEqualTo(2);
+    }
+
+    @Order(10)
+    @Test
+    void testSaveUser(){
+        userRepositoryUnderTest.save(userUnderTest);
+        assertThat(userRepositoryUnderTest.findByUsername(userUnderTest.getUsername())
+                .getUsername())
+                .isEqualTo(userUnderTest.getUsername());
     }
     
     

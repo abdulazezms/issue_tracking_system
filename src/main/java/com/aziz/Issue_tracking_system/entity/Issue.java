@@ -1,6 +1,7 @@
 package com.aziz.Issue_tracking_system.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,12 @@ public class Issue {
 
     private String status;
 
+    public Issue(String description, User user, Project project){
+        this.description = description;
+        this.user = user;
+        this.project = project;
+    }
+
 
     @Override
     public String toString() {
@@ -50,8 +58,6 @@ public class Issue {
                 ", status='" + status + '\'' +
                 ", resolvedIssues='" + resolvedIssue + '\'' +
                 ", fileName='" + fileName + '\'' +
-
-
                 '}';
     }
 }
