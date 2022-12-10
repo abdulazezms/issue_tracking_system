@@ -1,12 +1,13 @@
 package com.aziz.Issue_tracking_system.controller;
-import com.aziz.Issue_tracking_system.dao.IssueRepository;
-import com.aziz.Issue_tracking_system.dao.ProjectRepository;
-import com.aziz.Issue_tracking_system.dao.ResolvedIssueRepository;
-import com.aziz.Issue_tracking_system.dao.UserRepository;
+
 import com.aziz.Issue_tracking_system.entity.Issue;
 import com.aziz.Issue_tracking_system.entity.Project;
 import com.aziz.Issue_tracking_system.entity.ResolvedIssue;
 import com.aziz.Issue_tracking_system.entity.User;
+import com.aziz.Issue_tracking_system.service.IssueService;
+import com.aziz.Issue_tracking_system.service.ProjectService;
+import com.aziz.Issue_tracking_system.service.ResolvedIssueService;
+import com.aziz.Issue_tracking_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -30,25 +31,25 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/issues")
 public class IssueController {
-    ProjectRepository projectRepository;
-    IssueRepository issueRepository;
-    UserRepository userRepository;
-    ResolvedIssueRepository resolvedIssueRepository;
+    ProjectService projectService;
+    IssueService issueService;
+    UserService userService;
+    ResolvedIssueService resolvedIssueService;
     final String redirectionPath = "redirect:/projects/index";
 
     @Autowired
-    public IssueController(ProjectRepository projectRepository, IssueRepository issueRepository, UserRepository userRepository, ResolvedIssueRepository resolvedIssueRespository){
-        this.projectRepository = projectRepository;
-        this.issueRepository = issueRepository;
-        this.userRepository = userRepository;
-        this.resolvedIssueRepository = resolvedIssueRespository;
+    public IssueController(ProjectService projectService, IssueService issueService, UserService userService, ResolvedIssueService resolvedIssueService){
+        this.projectService = projectService;
+        this.issueService = issueService;
+        this.userService = userService;
+        this.resolvedIssueService = resolvedIssueService;
     }
 
     @GetMapping("")
     public String getIssues(@RequestParam("id") Optional<Integer> id, Model model){
         if(id.isEmpty()) return redirectionPath;
         int theId = id.get();
-        Project project = projectRepository.getReferenceById(theId);
+        Project project = projectService.getProject(theId);
         if(project == null) return redirectionPath;
         model.addAttribute("project", project);
         model.addAttribute("issues", project.getIssues());
@@ -66,10 +67,10 @@ public class IssueController {
         String username = auth.getName();
 
         //get the project that the issue will be related to
-        Project project = projectRepository.getReferenceById(theId);
+        Project project = projectService.getProject(theId);
 
         //get the currently logged in user
-        User user = userRepository.findByUsername(username);
+        User user = userService.findByUsername(username);
         if(project == null || user == null) return redirectionPath;
         model.addAttribute("issue", issue);
         model.addAttribute("user", user);
@@ -87,8 +88,8 @@ public class IssueController {
                             @ModelAttribute("file") Optional<MultipartFile> file) throws IOException {
 
         if(projectId.isEmpty() || userId.isEmpty() || priority.isEmpty()) return redirectionPath;
-        User user = userRepository.getReferenceById(userId.get());
-        Project project = projectRepository.getReferenceById(projectId.get());
+        User user = userService.getUser(userId.get());
+        Project project = projectService.getProject(projectId.get());
 
         Issue issue = new Issue();
         issue.setPriorityText(Map.of(1, "High", 2, "Medium", 3, "Low").get(priority.get()));
@@ -100,14 +101,14 @@ public class IssueController {
             issue.setFileName(file.get().getOriginalFilename());
             issue.setFile(file.get().getBytes());
         }
-        issueRepository.save(issue);
+        issueService.saveIssue(issue);
         return "redirect:/issues?id="+projectId.get();
     }
 
     @PostMapping("/resolve")
     public String resolveIssue(@RequestParam("file") Optional<MultipartFile> file, @RequestParam("issueId") Optional<Integer> issueId) throws IOException {
         if(file.isEmpty() || issueId.isEmpty()) return redirectionPath;
-        Issue issue = issueRepository.getReferenceById(issueId.get());
+        Issue issue = issueService.getIssue(issueId.get());
         Project project = issue.getProject();
         ResolvedIssue resolvedIssue = new ResolvedIssue();
         resolvedIssue.setIssue(issue);
@@ -116,7 +117,7 @@ public class IssueController {
         resolvedIssue.setType(file.get().getContentType());
         issue.setResolvedIssue(resolvedIssue);
         issue.setStatus("Resolved");
-        resolvedIssueRepository.save(resolvedIssue);
+        resolvedIssueService.saveResolvedIssue(resolvedIssue);
         return "redirect:/issues?id="+project.getId();
     }
 
@@ -124,15 +125,15 @@ public class IssueController {
     @GetMapping("/delete")
     public String deleteIssue(@RequestParam("issueId") Optional<Integer> issueId, @RequestParam("projectId") Optional<Integer> projectId){
         if(issueId.isEmpty() || projectId.isEmpty()) return redirectionPath;
-        Issue issue = issueRepository.getReferenceById(issueId.get());
+        Issue issue = issueService.getIssue(issueId.get());
         if(issue == null) return redirectionPath;
-        issueRepository.deleteById(issueId.get());
+        issueService.deleteIssue(issueId.get());
         return "redirect:/issues?id="+projectId.get();
     }
 
     @GetMapping("/download")
     public  ResponseEntity<Resource> downloadAttachment(@RequestParam("fileId") Optional<Integer> fileId) throws IOException{
-        ResolvedIssue resolvedIssue = resolvedIssueRepository.getReferenceById(fileId.get());
+        ResolvedIssue resolvedIssue = resolvedIssueService.getResolvedIssue(fileId.get());
         byte[] byteArray = resolvedIssue.getFile();
         ByteArrayResource resource = new ByteArrayResource(byteArray);
         return ResponseEntity.ok()
@@ -146,7 +147,7 @@ public class IssueController {
     }
     @GetMapping("/downloadIssueAttachment")
     public  ResponseEntity<Resource> downloadIssueAttachment(@RequestParam("issueId") Optional<Integer> issueId) throws IOException{
-        Issue issue = issueRepository.getReferenceById(issueId.get());
+        Issue issue = issueService.getIssue(issueId.get());
         byte[] byteArray = issue.getFile();
         ByteArrayResource resource = new ByteArrayResource(byteArray);
         return ResponseEntity.ok()

@@ -1,14 +1,13 @@
 package com.aziz.Issue_tracking_system.controller;
 
-import com.aziz.Issue_tracking_system.dao.IssueRepository;
-import com.aziz.Issue_tracking_system.dao.ProjectRepository;
 import com.aziz.Issue_tracking_system.entity.Project;
+import com.aziz.Issue_tracking_system.service.IssueService;
+import com.aziz.Issue_tracking_system.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -16,19 +15,19 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/projects")
 public class ProjectController {
-    ProjectRepository projectRepository;
-    IssueRepository issueRepository;
+    ProjectService projectService;
+    IssueService issueService;
 
     @Autowired
-    public ProjectController(ProjectRepository projectRepository, IssueRepository issueRepository){
-        this.projectRepository = projectRepository;
-        this.issueRepository = issueRepository;
+    public ProjectController(ProjectService projectService, IssueService issueService){
+        this.projectService = projectService;
+        this.issueService = issueService;
     }
 
 
     @GetMapping("/index")
     public String getProjects(Model model){
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectService.getAllProjects();
         model.addAttribute("projects", projects);
         return "projects/index";
     }
@@ -44,7 +43,7 @@ public class ProjectController {
     public String updateProject(@RequestParam("id") Optional<Integer> id, Model model){
         if(id.isEmpty()) return "projects/index";
         int theId = id.get();
-        Project project = projectRepository.getReferenceById(theId);
+        Project project = projectService.getProject(theId);
         model.addAttribute("project", project);
         return "projects/form-add";
 
@@ -57,17 +56,16 @@ public class ProjectController {
             model.addAttribute("error_message", bindingResult.getFieldError().getDefaultMessage());
             return "projects/form-add";
         }
-        projectRepository.save(project);
+        projectService.saveProject(project);
         return "redirect:/projects/index";
     }
 
     @GetMapping("/delete")
     public String deleteProject(@RequestParam("id") Optional<Integer> id){
         if(id.isEmpty()) return "projects/index";
-        Project project = projectRepository.getReferenceById(id.get());
-
-        issueRepository.deleteAll(project.getIssues());
-        projectRepository.deleteById(id.get());
+        Project project = projectService.getProject(id.get());
+        issueService.deleteAllIssues(project.getIssues());
+        projectService.deleteProject(id.get());
         return "redirect:/projects/index";
     }
 
