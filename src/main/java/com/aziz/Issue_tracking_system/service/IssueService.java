@@ -9,4 +9,5 @@ public interface IssueService {
     void saveIssue(Issue issue);
     Issue getIssue(int id);
     void deleteIssue(int id);
+    List<Issue> getAllIssues();
 }
