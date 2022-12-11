@@ -27,6 +27,12 @@ public class ResolvedIssue {
     @Lob
     private byte [] file;
 
+    public ResolvedIssue(String name, String type, Issue issue){
+        this.name = name;
+        this.type = type;
+        this.issue = issue;
+    }
+
     @Override
     public String toString() {
         return "ResolvedIssue{" +
