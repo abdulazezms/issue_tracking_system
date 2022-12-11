@@ -64,5 +64,4 @@ class UserServiceTest {
         assertThat(capturedUser).isEqualTo(userUnderTest);
     }
 
-
 }
