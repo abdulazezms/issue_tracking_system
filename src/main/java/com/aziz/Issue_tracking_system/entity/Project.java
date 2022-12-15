@@ -26,7 +26,7 @@ public class Project {
     private List<Issue> issues;
 
     @NotBlank(message = "Project's description must not be empty")
-    @Size(max = 100, message = "Project's description must not exceed 100 characters")
+    @Size(max = 150, message = "Project's description must not exceed 150 characters")
     private String description;
 
     public Project(String name, List<Issue> issues, String description){
